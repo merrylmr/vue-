@@ -53,9 +53,6 @@
 </div>
 <script>
   var box = document.getElementById('box')
-
-  //  分析
-  //  v-enter&v-enter-active-->block-v-leave-active&v-leave-to-->none
   var btn = document.getElementById('btn')
 
   //    下一帧执行
@@ -124,7 +121,6 @@
         if (this.show) {
           this.removeTransitionClass(el, enterToClass)
           this.removeTransitionClass(el, enterActiveClass)
-
         } else {
           this.removeTransitionClass(el, leaveToClass)
           this.removeTransitionClass(el, leaveActiveClass)
@@ -168,7 +164,7 @@
     }
   }
 
-  let instance = new Transition(box, 'bounce')
+  let instance = new Transition(box, 'slide-top')
   btn.addEventListener('click', () => {
     instance.toggle()
   })
