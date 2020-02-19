@@ -1,173 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
   <meta charset="UTF-8">
-  <title>Transition</title>
-  <style>
-    #box {
-      width: 300px;
-      height: 300px;
-      border: 1px solid red;
-    }
-
-    .slide-top-enter,
-    .slide-top-leave-to {
-      transform: translateY(-100%);
-    }
-
-    .slide-top-enter-active,
-    .slide-top-leave-active {
-      transition: all 0.3s ease;
-    }
-
-    /*.bounce-enter-to*/
-    .bounce-enter-active {
-      animation: bounce-in .5s;
-    }
-
-    /*bounce-leave-to*/
-    .bounce-leave-active {
-      animation: bounce-in .5s reverse;
-    }
-
-    @keyframes bounce-in {
-      0% {
-        transform: scale(0);
-      }
-      50% {
-        transform: scale(1.5);
-      }
-      100% {
-        transform: scale(1);
-      }
-    }
-
-  </style>
+  <title>Vue原理分析目录列表</title>
 </head>
 <body>
-<button id="btn">显示/隐藏box</button>
-<div id="box">
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis enim libero, at lacinia diam fermentum id.
-  Pellentesque habitant morbi tristique senectus et netus.
+<div class="list">
+  <div class="list-item">
+    <a href="./transition/index.html">
+      <h3>transition</h3>
+    </a>
+
+  </div>
+  <div class="list-item">
+    <a href="./vue-router/index.html">
+      <h3>router</h3>
+    </a>
+
+  </div>
 </div>
-<script>
-  var box = document.getElementById('box')
-  var btn = document.getElementById('btn')
-
-  //    下一帧执行
-  function nextFrame(fn) {
-    const raf = window ? window.requestAnimationFrame ? window.requestAnimationFrame.bind(window) : setTime : fn => fn()
-    raf(() => {
-      raf(fn)
-    })
-  }
-
-  //  分析
-  // beforeEnterHook 过度开始执行前的钩子函数(添加类)
-  // enterHook v-show 显示切换执行的钩子函数（cb移除类）
-  // afterEnterHook 过渡动画执行完成后的钩子函数
-  // beforeLeaveHook
-  // leaveHook
-  // afterLeaveHook
-  //  v-enter&v-enter-active-->block-v-leave-active&v-leave-to-->none
-  class Transition {
-    constructor(el, name, show) {
-      this.el = el
-      this.show = show || false // el初始状态，显示or隐藏（默认none）
-      this.x = this.autoCssTransition(name)
-
-      this.enterCb = function () {
-        el.style.display = 'block'
-      }
-      this.leaveCb = function () {
-        el.style.display = 'none'
-      }
-      this.init(el)
-    }
-
-    autoCssTransition(name) {
-      return {
-        enterClass: `${name}-enter`, // start-class
-        enterToClass: `${name}-enter-to`, // toClass
-        enterActiveClass: `${name}-enter-active`, //动画完成删除
-        leaveClass: `${name}-leave`,
-        leaveToClass: `${name}-leave-to`,
-        leaveActiveClass: `${name}-leave-active`
-      }
-    }
-
-    addTransitionClass(el, cls) {
-      el.classList.add(cls)
-    }
-
-    removeTransitionClass(el, cls) {
-      el.classList.remove(cls)
-    }
-
-    init(el) {
-      if (!this.show) {
-        el.style.display = 'none'
-      }
-
-      let {
-        enterToClass,
-        enterActiveClass,
-        leaveToClass,
-        leaveActiveClass
-      } = this.x
-
-      let cb = () => {
-        if (this.show) {
-          this.removeTransitionClass(el, enterToClass)
-          this.removeTransitionClass(el, enterActiveClass)
-        } else {
-          this.removeTransitionClass(el, leaveToClass)
-          this.removeTransitionClass(el, leaveActiveClass)
-          this.leaveCb();
-        }
-      }
-//     监听CSS过渡执行完成
-      el.addEventListener('transitionend', cb)
-//      监听css动画动画执行完成
-      el.addEventListener('animationend', cb)
-    }
-
-    enter() {
-      this.show = true
-      this.addTransitionClass(this.el, this.x.enterClass)
-      this.addTransitionClass(this.el, this.x.enterActiveClass)
-      this.enterCb()
-      // 注意：这里移除操作
-      nextFrame(() => {
-        this.removeTransitionClass(this.el, this.x.enterClass)
-        this.addTransitionClass(this.el, this.x.enterToClass)
-      })
-    }
-
-    leave() {
-      this.show = false
-      this.addTransitionClass(this.el, this.x.leaveClass)
-      this.addTransitionClass(this.el, this.x.leaveActiveClass)
-      nextFrame(() => {
-        this.removeTransitionClass(this.el, this.x.leaveClass)
-        this.addTransitionClass(this.el, this.x.leaveToClass)
-      })
-    }
-
-    toggle() {
-      if (!this.show) {
-        this.enter()
-      } else {
-        this.leave()
-      }
-    }
-  }
-
-  let instance = new Transition(box, 'slide-top')
-  btn.addEventListener('click', () => {
-    instance.toggle()
-  })
-</script>
 </body>
 </html>

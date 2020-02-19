@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Router</title>
+</head>
+<body>
+<ul>
+  <li onClick="router.push('/a',()=>console.log('push a'))">push a</li>
+  <li onClick="router.push('/b',()=>console.log('push b'))">push b</li>
+  <li onClick="router.replace('/c',()=>console.log('replace c'))">replace c</li>
+  <li onClick="router.go(1)">go</li>
+  <li onClick="router.back(-1)">back</li>
+</ul>
+<div id="view">aaaa</div>
+
+<script src="./HashHistory.js"></script>
+<script src="./HtmlHistory.js"></script>
+<script src="./router.js"></script>
+<script>
+  window.router = new Router('view', {
+    routes: [
+      {
+        path: '/a',
+        component: '<p>a</p>'
+      },
+      {
+        path: '/b',
+        component: '<p>b</p>'
+      },
+      {
+        path: '/c',
+        component: '<p>c</p>'
+      },
+      {
+        path: '*',
+        redirect: '/index'
+      },
+    ]
+  }, 'html5')
+</script>
+</body>
+</html>
