@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<script src="js/observer.js"></script>
+<script>
+  var myCat = {
+    name: 'orange',
+    weight: '6kg'
+  }
+  let instance = new Observer(myCat);
+  console.log('myCat', myCat.name)
+  myCat.name = '123'
+  console.log('myCat', myCat)
+  // Object.defineProperty(myCat, 'name', {
+  //   enumerable: true,
+  //   configurable: true,
+  //   get(val) {
+  //     console.log('读取啦', val)
+  //     return val
+  //   },
+  //   set(v) {
+  //     console.log('赋值啦', v)
+  //     return v
+  //   }
+  // })
+  // console.log('myCat.name', myCat.name)
+  // myCat.name = '橙子'
+</script>
+</body>
+</html>
