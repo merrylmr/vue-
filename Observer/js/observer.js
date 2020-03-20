@@ -2,7 +2,8 @@ class Observer {
   constructor(value) {
     this.value = value
     this.dep = new Dep()
-    def(value, '__obj__', this)
+    // def(value, '__obj__', this)
+    // value.__obj__ = this
     if (Array.isArray(value)) {
     } else {
       this.walk(value)
@@ -29,14 +30,17 @@ function defineReactive(obj, key, val) {
     val = obj[key]
   }
   // 边界判断
-  if (typeof val === 'object') {
-    new Observer(val)
-  }
+  console.log('val', val)
+  // if (typeof val === 'object') {
+  //   new Observer(val)
+  // }
+  const dep = new Dep()
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
     get() {
       console.log('get 数据')
+      dep.depend()
       return val
     },
     set(v) {
@@ -45,6 +49,7 @@ function defineReactive(obj, key, val) {
       }
       console.log('set 数据')
       val = v
+      dep.notify()
     }
   })
 }

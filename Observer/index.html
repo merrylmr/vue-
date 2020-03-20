@@ -5,30 +5,25 @@
   <title>Title</title>
 </head>
 <body>
+<script src="js/dep.js"></script>
 <script src="js/observer.js"></script>
+<script src="js/watch.js"></script>
 <script>
   var myCat = {
     name: 'orange',
     weight: '6kg'
   }
   let instance = new Observer(myCat);
-  console.log('myCat', myCat.name)
+  new Watcher(myCat, 'name', function (n, o) {
+    console.log('new name:', n, 'oldName:', o)
+    //  通知更新视图
+  })
+  new Watcher(myCat, 'weight', function (n, o) {
+    console.log('new weight:', n, 'weight:', o)
+    // 通知更新
+  })
   myCat.name = '123'
-  console.log('myCat', myCat)
-  // Object.defineProperty(myCat, 'name', {
-  //   enumerable: true,
-  //   configurable: true,
-  //   get(val) {
-  //     console.log('读取啦', val)
-  //     return val
-  //   },
-  //   set(v) {
-  //     console.log('赋值啦', v)
-  //     return v
-  //   }
-  // })
-  // console.log('myCat.name', myCat.name)
-  // myCat.name = '橙子'
+  myCat.weight = 8
 </script>
 </body>
 </html>

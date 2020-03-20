@@ -15,12 +15,15 @@ class Dep {
   }
 
   depend() {
-    if (Dep.target) {
-      Dep.target.addDep(this)
+    if (window.target) {
+      // console.log('depend', window.target)
+      this.addSub(window.target)
+      console.log('depend', (this.subs).toString())
     }
   }
 
   notify() {
+    console.log('notify')
     const subs = this.subs.slice();
     for (let i = 0, l = subs.length; i < l; i++) {
       subs[i].update()
@@ -33,12 +36,21 @@ Dep.target = null
 Dep.target = null
 const targetStack = []
 
- function pushTarget (target) {
+function pushTarget(target) {
   targetStack.push(target)
   Dep.target = target
 }
 
- function popTarget () {
+function popTarget() {
   targetStack.pop()
   Dep.target = targetStack[targetStack.length - 1]
+}
+
+function remove(arr, item) {
+  if (arr.length) {
+    const index = arr.indexOf(item)
+    if (index > -1) {
+      arr.splice(index, 1)
+    }
+  }
 }
